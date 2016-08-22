@@ -1,0 +1,9 @@
+def vectorPointToPoint(basePt, tipPt):
+    # creates a vector between two points
+    Vector = []
+    for i in range(len(basePt)):
+        vecOr = rh.Geometry.Vector3d(basePt[i])
+        vecTo = rh.Geometry.Vector3d(tipPt[i])
+        vecSub = rh.Geometry.Vector3d.Subtract(vecTo, vecOr)
+        Vector.append(vecSub)
+    return Vector
