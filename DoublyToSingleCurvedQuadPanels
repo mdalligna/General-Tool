@@ -1,3 +1,15 @@
+'''
+Created on 2 Oct 2013
+
+@author: mdallign
+'''
+import Rhino as rh
+
+import clr
+clr.AddReference("Grasshopper")
+#import Grasshopper as gh
+
+
 def diamondPanelsDoubleToSingleCurved(vtx0, vtx1, vtx2, vtx3, face):
     # replace diamond ruled surf panels with cylindrical panels
     # create a line between v1 and v3, midPt of line and extrusion arc
