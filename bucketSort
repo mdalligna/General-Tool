@@ -1,0 +1,45 @@
+def bucketSort(listOfFloats, intervalSubdivision):
+    # sort the list
+    sortedList = sorted(listOfFloats)
+    
+    # generate list of buckets
+    startDomain = int(round(sortedList[0]))
+    endDomain = int(round(sortedList[len(sortedList)-1]))
+    intervalsNumber = int(round(endDomain - startDomain)*intervalSubdivision)
+    intervalLength = ((endDomain-startDomain)/intervalsNumber)- 0.000001
+    upperLimit = int(round((endDomain*intervalSubdivision)+(intervalLength*intervalSubdivision)))
+    
+    listOfIntervals = []
+    for i in range(0, upperLimit):
+        interval = []
+        interval.append(abs(startDomain*(i*intervalLength)))
+        interval.append(abs(interval[0] + intervalLength))
+        listOfIntervals.append(interval)
+    
+        Counter = 0
+    print(listOfIntervals)
+    
+    # place elements on each list of buckets
+    for i in range(len(listOfIntervals)):
+        for j in range(len(sortedList)):
+            if (listOfIntervals[i][0] < sortedList[j] < listOfIntervals[i][1]):
+                listOfIntervals[i].append(sortedList[j])
+        listOfIntervals[i].pop(0)
+        listOfIntervals[i].pop(0)
+    
+    print(listOfIntervals)
+    
+    # find the average element of each bucket and replace (create a new list) 
+    # with only the average element of the bucket
+    newList = []
+    for i in range(len(listOfIntervals)):
+        summ = 0
+        for j in range(len(listOfIntervals[i])):
+            if (len(listOfIntervals[i]) == 0):
+                pass
+            else:
+                summ += listOfIntervals[i][j]
+        for j in range(len(listOfIntervals[i])):
+            newList.append(summ/len(listOfIntervals[i]))
+            
+    return newList
