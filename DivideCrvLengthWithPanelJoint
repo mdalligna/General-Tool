@@ -1,0 +1,66 @@
+'''
+Created on 2 Oct 2013
+
+@author: mdallign
+'''
+import Rhino as rh
+
+import clr
+clr.AddReference("Grasshopper")
+#import Grasshopper as gh
+
+def divideCurveLengthPanelJoint(curve, panelLength):
+    # panelling curves with same panel length and same joint length
+    # not knowing the length of the curve
+    # the end result is a panel/joint/panel curve subdivision 
+    # set up the type hint to curve
+    # input: curve and panel length
+    
+    # calculate spacing
+    #panelLength = 0.20
+    tempJointLength = 0.005
+    spacing = panelLength + tempJointLength
+  
+    crvLength = rh.Geometry.NurbsCurve.GetLength(curve)
+    
+    # number of panels
+    tempPanelNum = crvLength/spacing
+    
+    x = tempPanelNum - int(tempPanelNum)
+    if x > panelLength:
+        panelNum = int(tempPanelNum) 
+    else:
+        panelNum = int(tempPanelNum) - 1
+    
+    # define joint length
+    jointNum = panelNum-1
+    jointLength = (crvLength - (panelNum*panelLength))/(jointNum)
+    
+    # divide curve with joints and panels
+    lengthList = []
+    lengthList.append(panelLength)
+    for i in range(0, jointNum*2, 2):
+        lengthValue1 = lengthList[i]+jointLength
+        lengthList.append(lengthValue1)
+        
+        lengthValue2 = lengthList[i+1] + panelLength
+        lengthList.append(lengthValue2)
+    
+    Pt = []
+    Par = []    
+    for i in range(len(lengthList)):
+        pt = rh.Geometry.NurbsCurve.PointAtLength(curve, lengthList[i])
+        par = rh.Geometry.NurbsCurve.ClosestPoint(curve, pt)
+        Pt.append(pt)
+        Par.append(par[1])
+    
+    panel = rh.Geometry.NurbsCurve.Split(curve, Par)
+    crvSegs = []
+    #Joint = []
+    for i in range(len(panel)):
+        if i % 2 == 0:
+            crvSegs.append(panel[i])
+#        else:
+#            Joint.append(panel[i])
+    
+    return crvSegs
