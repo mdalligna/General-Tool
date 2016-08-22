@@ -1,0 +1,187 @@
+def diagridPanels(pointGrid):
+    # Grid 1
+    pt1 = []
+    pt2 = []
+    pt3 = []
+    pt4 = []
+    
+    # Grid 2
+    pt1prime = []
+    pt2prime = []
+    pt3prime = []
+    pt4prime = []
+    
+    # edge Bottom
+    pt1be = []
+    pt2be = []
+    pt3be = []
+    
+    # edge Top
+    pt1te = []
+    pt2te = []
+    pt3te = []
+    
+    # edge left
+    pt1le = []
+    pt2le = []
+    pt3le = []
+    
+    # edge right
+    pt1re = []
+    pt2re = []
+    pt3re = []
+    
+    # polygons
+    surf = []
+    surf2 = []
+    surfB = []
+    surfT = []
+    surfL = []
+    surfR = []
+
+    
+    
+    for i in range(pointGrid.BranchCount):
+        for j in range(len(pointGrid.Branch(i))):
+            
+            # grid 1
+            if (i % 2 != 0 and j % 2 == 0 and i != pointGrid.BranchCount-1 and j != len(pointGrid.Branch(i))-1 and j != len(pointGrid.Branch(i))-2):
+                pt1.append(pointGrid.Branch(i)[j])
+            if (i % 2 != 0 and j % 2 == 0 and i != pointGrid.BranchCount-1 and j != 0):
+                pt3.append(pointGrid.Branch(i)[j])
+            if (i % 2 == 0 and j % 2 != 0 and i != 0 and j != len(pointGrid.Branch(i))-1):
+                pt2.append(pointGrid.Branch(i)[j])
+            if (i % 2 == 0 and j % 2 != 0 and i != pointGrid.BranchCount-1 and i != pointGrid.BranchCount-2 and j != len(pointGrid.Branch(i))-1):
+                pt4.append(pointGrid.Branch(i)[j])
+                
+            # grid 2
+            if (i % 2 == 0 and j % 2 != 0 and i != 0 and i != pointGrid.BranchCount-1 and j != len(pointGrid.Branch(i))-1 and j != len(pointGrid.Branch(i))-2):
+                pt1prime.append(pointGrid.Branch(i)[j])
+            if (i % 2 != 0 and j % 2 == 0 and i != 1 and j != 0 and j != len(pointGrid.Branch(i))-1):
+                pt2prime.append(pointGrid.Branch(i)[j])
+            if (i % 2 == 0 and j % 2 != 0 and i != 0 and i != pointGrid.BranchCount-1 and j != 1): 
+                pt3prime.append(pointGrid.Branch(i)[j])
+            if (i % 2 != 0 and j % 2 == 0 and i != pointGrid.BranchCount-1 and i != pointGrid.BranchCount-2 and j != 0 and j != len(pointGrid.Branch(i))-1):
+                pt4prime.append(pointGrid.Branch(i)[j])
+            
+            # bottom edge
+            if (j == 0 and i == 0):
+                pt1be.append(pointGrid.Branch(i)[j])
+            if (j == 0 and i % 2 != 0 and i != pointGrid.BranchCount-1):
+                pt1be.append(pointGrid.Branch(i)[j])
+            if (j == 0 and i % 2 != 0 and i != pointGrid.BranchCount-1):
+                pt2be.append(pointGrid.Branch(i)[j])
+            if (j == 0 and i == pointGrid.BranchCount-1):
+                pt2be.append(pointGrid.Branch(i)[j])
+            if (j == 1 and i % 2 == 0):
+                pt3be.append(pointGrid.Branch(i)[j])
+                
+            # top edge
+            if (len(pointGrid.Branch(i)) % 2 == 0):
+                if (j == len(pointGrid.Branch(i))-1 and i % 2 == 0 and i != 0):
+                    pt1te.append(pointGrid.Branch(i)[j])
+                if (i % 2 != 0):
+                    if (j == len(pointGrid.Branch(i))-1 and i == pointGrid.BranchCount-1):
+                        pt1te.append(pointGrid.Branch(i)[j])
+                if (j == len(pointGrid.Branch(i))-1 and i % 2 == 0 and i != pointGrid.BranchCount-1):
+                    pt2te.append(pointGrid.Branch(i)[j])
+                if (j == len(pointGrid.Branch(i))-2 and i % 2 != 0):
+                    pt3te.append(pointGrid.Branch(i)[j])
+    
+            if (len(pointGrid.Branch(i)) % 2 != 0):
+                if (j == len(pointGrid.Branch(i))-1 and i % 2 != 0):
+                    pt1te.append(pointGrid.Branch(i)[j])
+                if (i % 2 == 0):
+                    if (j == len(pointGrid.Branch(i))-1 and i == pointGrid.BranchCount-1):
+                        pt1te.append(pointGrid.Branch(i)[j])
+                if (j == len(pointGrid.Branch(i))-1 and i == 0):
+                    pt2te.append(pointGrid.Branch(i)[j])
+                if (j == len(pointGrid.Branch(i))-1 and i % 2 != 0 and i != pointGrid.BranchCount-1):
+                    pt2te.append(pointGrid.Branch(i)[j])
+                if (j == len(pointGrid.Branch(i))-2 and i % 2 == 0):
+                    pt3te.append(pointGrid.Branch(i)[j])
+            
+            # left edge
+            if (i == 0 and j % 2 != 0 and j != len(pointGrid.Branch(i))-2 and j != len(pointGrid.Branch(i))-1):
+                pt1le.append(pointGrid.Branch(i)[j])
+            if (i == 1 and j % 2 == 0 and j != 0 and j != len(pointGrid.Branch(i))-1):
+                pt2le.append(pointGrid.Branch(i)[j])
+            if (i == 0 and j % 2 != 0 and j != 1):
+                pt3le.append(pointGrid.Branch(i)[j])
+    
+            # right edge
+            if (len(pointGrid.Branch(i)) % 2 == 0):
+                if (i % 2 == 0):
+                    if(i == pointGrid.BranchCount-1):
+                            if (j % 2 != 0):
+                                if (j != 1):
+                                    pt1re.append(pointGrid.Branch(i)[j])
+                                if (j != len(pointGrid.Branch(i))-1):
+                                    pt3re.append(pointGrid.Branch(i)[j])
+                    if(i == pointGrid.BranchCount-2):
+                        if (j % 2 != 0):
+                            if (j != len(pointGrid.Branch(i))-1):
+                                pt2re.append(pointGrid.Branch(i)[j])
+    
+                if (i % 2 != 0):
+                    if(i == pointGrid.BranchCount-2):
+                            if (j % 2 == 0 and j != 0):
+                                pt2re.append(pointGrid.Branch(i)[j])
+                    if(i == pointGrid.BranchCount-1):
+                        if (j % 2 == 0):
+                            if(j != 0):
+                                pt1re.append(pointGrid.Branch(i)[j])
+                            if(j != len(pointGrid.Branch(i))-2):
+                                pt3re.append(pointGrid.Branch(i)[j])
+    
+            if (len(pointGrid.Branch(i)) % 2 != 0):
+                if (i % 2 == 0):
+                    if(i == pointGrid.BranchCount-1):
+                            if (j % 2 != 0):
+                                if (j != 1):
+                                    pt1re.append(pointGrid.Branch(i)[j])
+                                if (j != len(pointGrid.Branch(i))-2 and j != len(pointGrid.Branch(i))-1):
+                                    pt3re.append(pointGrid.Branch(i)[j])
+                    if(i == pointGrid.BranchCount-2):
+                        if (j % 2 != 0):
+                            if (j != len(pointGrid.Branch(i))-1):
+                                pt2re.append(pointGrid.Branch(i)[j])
+    
+                if (i % 2 != 0):
+                    if(i == pointGrid.BranchCount-2):
+                            if (j % 2 == 0 and j != 0 and j != len(pointGrid.Branch(i))-1):
+                                pt2re.append(pointGrid.Branch(i)[j])
+                    if(i == pointGrid.BranchCount-1):
+                        if (j % 2 == 0):
+                            if(j != 0):
+                                pt1re.append(pointGrid.Branch(i)[j])
+                            if(j != len(pointGrid.Branch(i))-2 and j != len(pointGrid.Branch(i))-1):
+                                pt3re.append(pointGrid.Branch(i)[j])
+
+    # create pattern polygons
+    #create pattern polygons
+    for i in range(len(pt1)):
+        surface = rh.Geometry.NurbsSurface.CreateFromCorners(pt1[i], pt2[i], pt3[i], pt4[i])
+        surf.append(surface)
+    
+    for i in range(len(pt1prime)):
+        surface2 = rh.Geometry.NurbsSurface.CreateFromCorners(pt1prime[i], pt2prime[i], pt3prime[i], pt4prime[i])
+        surf2.append(surface2)
+    
+    for i in range(len(pt1be)):
+        surfaceB = rh.Geometry.NurbsSurface.CreateFromCorners(pt1be[i], pt2be[i], pt3be[i])
+        surfB.append(surfaceB)
+    
+    for i in range(len(pt1te)):
+        surfaceT = rh.Geometry.NurbsSurface.CreateFromCorners(pt1te[i], pt2te[i], pt3te[i])
+        surfT.append(surfaceT)
+    
+    for i in range(len(pt1le)):
+        surfaceL = rh.Geometry.NurbsSurface.CreateFromCorners(pt1le[i], pt2le[i], pt3le[i])
+        surfL.append(surfaceL)
+    
+    for i in range(len(pt1re)):
+        surfaceR = rh.Geometry.NurbsSurface.CreateFromCorners(pt1re[i], pt2re[i], pt3re[i])
+        surfR.append(surfaceR)
+        
+    return surf, surf2, surfB, surfT, surfL, surfR 
