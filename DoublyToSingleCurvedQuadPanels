@@ -1,0 +1,34 @@
+def diamondPanelsDoubleToSingleCurved(vtx0, vtx1, vtx2, vtx3, face):
+    # replace diamond ruled surf panels with cylindrical panels
+    # create a line between v1 and v3, midPt of line and extrusion arc
+    ln = rh.Geometry.Line(vtx1, vtx3)
+    lnMpt = rh.Geometry.Line.PointAt(ln, 0.5)
+    arc = rh.Geometry.Arc(vtx0, lnMpt, vtx2)
+    extrArc = duplicateArc(arc)
+    
+    # move arc to extrusion position and create cylinder
+    vecFrom = rh.Geometry.Vector3d(lnMpt.X, lnMpt.Y, lnMpt.Z)
+    vecTo = rh.Geometry.Vector3d(vtx1.X, vtx1.Y, vtx1.Z)
+    
+    vecMove = rh.Geometry.Vector3d.Subtract(vecTo, vecFrom)
+    moveMatrix = rh.Geometry.Transform.Translation(vecMove)
+    extrArc.Transform(moveMatrix)
+    
+    vecTo2 = rh.Geometry.Vector3d(vtx3.X, vtx3.Y, vtx3.Z)
+    vecExtr = rh.Geometry.Vector3d.Subtract(vecTo2, vecTo)
+    cylinder = rh.Geometry.Extrusion.CreateExtrusion(rh.Geometry.Arc.ToNurbsCurve(extrArc), vecExtr)
+    
+    # create panel outline to project
+    poly = rh.Geometry.Polyline((vtx0, vtx1, vtx2, vtx3, vtx0))
+    surf = rh.Geometry.Brep.Faces.GetValue(face)
+    surf[0].SetDomain(0, rh.Geometry.Interval(0, 1))
+    surf[0].SetDomain(1, rh.Geometry.Interval(0, 1))
+    direction = rh.Geometry.Surface.NormalAt(surf[0], 0.5, 0.5)
+    
+    crv = rh.Geometry.Polyline.ToNurbsCurve(poly)
+    curve = rh.Geometry.Curve.ProjectToBrep(crv, rh.Geometry.Surface.ToBrep(cylinder), -direction, 0.01)
+    
+    cutter = rh.Geometry.Extrusion.CreateExtrusion(curve[0], direction)
+    panel = rh.Geometry.Brep.Split(rh.Geometry.Surface.ToBrep(cylinder), rh.Geometry.Surface.ToBrep(cutter), 0.01)
+
+    return panel[0], arc, lnMpt, cylinder, cutter
