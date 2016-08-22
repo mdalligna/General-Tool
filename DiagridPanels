@@ -1,3 +1,15 @@
+'''
+Created on 2 Oct 2013
+
+@author: mdallign
+'''
+import Rhino as rh
+
+import clr
+clr.AddReference("Grasshopper")
+#import Grasshopper as gh
+
+
 def diagridPanels(pointGrid):
     # Grid 1
     pt1 = []
