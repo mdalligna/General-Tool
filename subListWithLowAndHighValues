@@ -1,0 +1,12 @@
+def subListLowHighLimit(List, lowLimit, highLimit):
+    subList = []
+    Counter = 0
+    for i in range(len(List)):
+        if (Counter < lowLimit):
+            subList.append(List[i])
+            Counter += 1
+        elif (Counter < highLimit):
+            Counter +=1
+        else:
+            Counter = 0
+    return subList
