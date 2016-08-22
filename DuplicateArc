@@ -1,0 +1,8 @@
+def duplicateArc(arc):
+    # creates a copy of the same arc
+    sPt = rh.Geometry.Arc.StartPoint.GetValue(arc)
+    ePt = rh.Geometry.Arc.EndPoint.GetValue(arc)
+    mPt = rh.Geometry.Arc.MidPoint.GetValue(arc)
+    arc = rh.Geometry.Arc(sPt, mPt, ePt)
+
+    return arc
