@@ -1,0 +1,22 @@
+def fromCrvToArc(curve, numPts):
+    # rebuilds a NURBS curve with tangent arc segments    
+    Pts = []
+    parOnCrv = rh.Geometry.Curve.DivideByCount(curve, numPts, True)
+    for i in range(len(parOnCrv)):
+        pts = rh.Geometry.Curve.PointAt(curve, parOnCrv[i])
+        Pts.append(pts)
+    
+    tgVec1 = rh.Geometry.Curve.TangentAt(curve, parOnCrv[0])
+        
+    Arc = []
+    arc1 = rh.Geometry.Arc(Pts[0], tgVec1, Pts[1])
+    arcCrv1 = rh.Geometry.Arc.ToNurbsCurve(arc1)
+    Arc.append(arcCrv1)    
+    
+    for i in range(len(Pts) - 2):        
+        arcEndTg = rh.Geometry.ArcCurve.TangentAtEnd.GetValue(Arc[i])
+        arc = rh.Geometry.Arc(Pts[i+1], arcEndTg, Pts[i+2])
+        arcCrv = rh.Geometry.Arc.ToNurbsCurve(arc)
+        Arc.append(arcCrv)
+            
+    return Arc, Pts
