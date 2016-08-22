@@ -1,0 +1,16 @@
+def replacementRuleForFloats(tol, radius):
+    # for floats
+    radius1 = radius[0]
+    newRadiusList = []
+    newRadiusList.append(radius[0])
+
+    for i in range(1, len(radius)):
+        radius2 = radius[i]
+        if (abs(radius1 - radius2) <= tol):
+            newRadius = radius1
+            newRadiusList.append(newRadius)
+        else:
+            newRadiusList.append(radius2)
+        radius1 = radius[i]
+
+    return newRadiusList
